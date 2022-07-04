@@ -8,10 +8,12 @@ contract WalletChallenge is Ownable {
     uint internal _totalBalance;
 
     struct User {
-        uint balance;
-        Allowance allowance;
+        uint myBalance;
+        uint allMyAllowanceBalances;
+        mapping (address => uint) balances;
+        mapping (address => Allowances) allowances;
     }
-    struct Allowance {
+    struct Allowances {
         uint index;
         uint timestamp;
         uint duration;
@@ -29,52 +31,65 @@ contract WalletChallenge is Ownable {
         address indexed _from
     );
 
-
+    /////////////////////View Functions
     function getTotalBalance() public onlyOwner view returns(uint totalBalance){
         return _totalBalance;
     }
-
     function getMyBalance() public view returns(uint myBalance) {
-        return _user[msg.sender].balance;
+        return _user[msg.sender].myBalance;
     }
+    function getAllMyAllowanceBalances() public view returns(uint allMyAllowanceBalances){
+        return _user[msg.sender].allMyAllowanceBalances;
+    }
+    function getMyAllowanceBalanceIn(address _allowner) public view returns(uint getMyAllowanceBalance){
+        return _user[msg.sender].balances[_allowner];
+    }
+    ///////////////////////////////////
 
     function giveAllowance(address _to, uint _duration, uint _amount) public {
         require(_to != msg.sender, "You can't give an allowance to yourself.");
-        decreaseMoney(msg.sender, _amount);
+        require(_user[_to].balances[msg.sender] >= _amount, "Insufficient funds.");
+
         setAllowanceTime(_to, _duration);
-
-        _user[_to].allowance.value = _amount;
-        _user[_to].allowance.index ++;
-
-        emit AllowanceSucceed(
-            _user[_to].allowance.index,
-            _user[_to].allowance.timestamp,
-            _user[_to].allowance.duration,
-            _user[_to].allowance.value,
-            _user[_to].allowance.from
-        );
+        _user[_to].allowances[msg.sender].value = _amount;
+        commonBodyToAllowanceFunctions(_to, _amount);
     }
 
     function payAndGiveAllowance(address _to, uint _duration) public payable {
         require(_to != msg.sender, "You can't give an allowance to yourself.");
+
         receiveMoney(_to);
         setAllowanceTime(_to, _duration);
+        _user[_to].balances[msg.sender] = _user[_to].balances[msg.sender] + (_user[_to].allowances[msg.sender].value = msg.value);
+        commonBodyToAllowanceFunctions(_to, msg.value);
+    }
 
-        _user[_to].balance = _user[_to].balance + (_user[_to].allowance.value = msg.value);
-        _user[_to].allowance.index ++;
-        
+    function transferAndGiveAllowance(address _to, uint _duration, uint _amount) public {
+        require(_to != msg.sender, "You can't give an allowance to yourself.");
+
+        decreaseMoney(msg.sender, _amount);
+        setAllowanceTime(_to, _duration);
+        _user[_to].balances[msg.sender] = _user[_to].balances[msg.sender] + (_user[_to].allowances[msg.sender].value = _amount);
+        commonBodyToAllowanceFunctions(_to, _amount);
+    }
+
+    function commonBodyToAllowanceFunctions(address _to, uint _amount) internal {
+        _user[msg.sender].allMyAllowanceBalances = _user[msg.sender].allMyAllowanceBalances + _amount;
+
         emit AllowanceSucceed(
-            _user[_to].allowance.index,
-            _user[_to].allowance.timestamp,
-            _user[_to].allowance.duration,
-            _user[_to].allowance.value,
-            _user[_to].allowance.from
+            _user[_to].allowances[msg.sender].index,
+            _user[_to].allowances[msg.sender].timestamp,
+            _user[_to].allowances[msg.sender].duration,
+            _user[_to].allowances[msg.sender].value,
+            _user[_to].allowances[msg.sender].from
         );
+
+        _user[_to].allowances[msg.sender].index ++;
     }
 
     function setAllowanceTime(address _to, uint _duration) internal {
-        _user[_to].allowance.timestamp = block.timestamp;
-        _user[_to].allowance.duration = _duration;
+        _user[_to].allowances[msg.sender].timestamp = block.timestamp;
+        _user[_to].allowances[msg.sender].duration = _duration;
     }
 
     function depositMoney() public payable {
@@ -83,13 +98,13 @@ contract WalletChallenge is Ownable {
 
     function receiveMoney(address _to) internal {
         _totalBalance = _totalBalance + msg.value;
-        _user[_to].balance = _user[_to].balance + msg.value;
+        _user[_to].balances[_to] = _user[_to].balances[_to] + msg.value;
     }
 
     function decreaseMoney(address _address, uint _amount) public payable {
-        require(_user[_address].balance >= _amount, "Insufficient funds.");
+        require(_user[_address].myBalance >= _amount, "Insufficient funds.");
 
-        _user[_address].balance = _user[_address].balance - _amount;
+        _user[_address].myBalance = _user[_address].myBalance - _amount;
         _totalBalance = _totalBalance - _amount;
     }
 
