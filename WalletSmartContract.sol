@@ -39,10 +39,10 @@ contract WalletChallenge is Ownable {
     }
 
     function giveAllowance(address _to, uint _duration, uint _amount) public {
+        require(_to != msg.sender, "You can't give an allowance to yourself.");
         decreaseMoney(msg.sender, _amount);
         setAllowanceTime(_to, _duration);
 
-        // _user[_to].balance = _user[_to].balance + (_user[_to].allowance.value = _amount);
         _user[_to].allowance.value = _amount;
         _user[_to].allowance.index ++;
 
@@ -55,7 +55,8 @@ contract WalletChallenge is Ownable {
         );
     }
 
-    function payAndGiveAllowanceTo(address _to, uint _duration) public payable {
+    function payAndGiveAllowance(address _to, uint _duration) public payable {
+        require(_to != msg.sender, "You can't give an allowance to yourself.");
         receiveMoney(_to);
         setAllowanceTime(_to, _duration);
 
@@ -72,7 +73,8 @@ contract WalletChallenge is Ownable {
     }
 
     function setAllowanceTime(address _to, uint _duration) internal {
-        _user[_to].allowance.duration = (_user[_to].allowance.timestamp = block.timestamp) - _duration;
+        _user[_to].allowance.timestamp = block.timestamp;
+        _user[_to].allowance.duration = _duration;
     }
 
     function depositMoney() public payable {
