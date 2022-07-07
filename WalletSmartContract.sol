@@ -55,19 +55,16 @@ contract WalletChallenge is Ownable {
         );
         _user[_to].allowances[msg.sender].index ++;
     }
-    modifier verifiesRemainingTime (address _allowner) {
-        require(block.timestamp < _user[msg.sender].allowances[_allowner].timestamp + _user[msg.sender].allowances[_allowner].duration, "Your allowed time has ended.");
+    modifier verifyRemainingTime (address _allowner) {
+        require(verifiesRemainingTime(_allowner), "Your allowed time has ended.");
         _;
     }
     //////////////////////////////
 
-    /////////////////////Only Owner
-    function getTotalBalance() public onlyOwner view returns(uint totalBalance){
+    /////////////////////View Functions
+    function getTotalBalance() public view returns(uint totalBalance){
         return _totalBalance;
     }
-    ///////////////////////////////
-
-    /////////////////////View Functions
     function getMyBalance() public view returns(uint myBalance) {
         return _user[msg.sender].myBalance;
     }
@@ -86,7 +83,7 @@ contract WalletChallenge is Ownable {
             _user[msg.sender].allowances[_allowner].value
         );
     }
-    function getMyAllowanceRemainingTime(address _allowner) public view verifiesRemainingTime(_allowner) returns(uint remainingTime){
+    function getMyAllowanceRemainingTime(address _allowner) public view verifyRemainingTime(_allowner) returns(uint remainingTime){
         return (_user[msg.sender].allowances[_allowner].timestamp + _user[msg.sender].allowances[_allowner].duration) - block.timestamp;
     }
     ///////////////////////////////////
@@ -101,7 +98,7 @@ contract WalletChallenge is Ownable {
     }
 
     function payAndGiveAllowance(address _to, uint _duration) public payable AllowanceFunction(_to){
-        receiveMoney(_to);
+        _totalBalance += msg.value;
         setAllowanceTime(_to, _duration);
         _user[_to].allMyAllowanceBalances += msg.value;
         _user[_to].balances[msg.sender] += (_user[_to].allowances[msg.sender].value = msg.value);
@@ -116,21 +113,14 @@ contract WalletChallenge is Ownable {
     
     function revokeAllowance(address _to) public {
         require(_to != msg.sender, "You can't do this with your own wallet.");
-
-        uint redeemedValue = _user[_to].allowances[msg.sender].value;
-
-        _user[_to].allMyAllowanceBalances -= _user[_to].allowances[msg.sender].value;
-        _user[_to].balances[msg.sender] -= _user[_to].allowances[msg.sender].value;
-        _user[_to].allowances[msg.sender].timestamp = block.timestamp;
-        _user[_to].allowances[msg.sender].duration = _user[_to].allowances[msg.sender].value = 0;
-
-        _user[msg.sender].myBalance += redeemedValue;
+        redeemValueFromAllowance(_to, msg.sender, _user[_to].allowances[msg.sender].value);
+        setAllowanceTime(_to, 0);
 
         emit AllowanceRevoked(
             _user[_to].allowances[msg.sender].index,
             _user[_to].allowances[msg.sender].timestamp,
             _to,
-            redeemedValue
+            0
         );
 
         _user[_to].allowances[msg.sender].index++;
@@ -152,18 +142,23 @@ contract WalletChallenge is Ownable {
         _user[_address].myBalance -= _amount;
     }
     function redeemValueFromAllowance(address _from, address _to, uint _amount) internal {
-        require(_user[_from].allowances[_to].value >= _amount, "");
-        uint redeemedValue = _user[_from].allowances[_to].value;
+        require(_user[_from].allowances[_to].value >= _amount, "Insufficient funds.");
 
-        _user[_from].allowances[_to].value = 0;
-        _user[_to].allMyAllowanceBalances -=
-        _user[msg.sender].myBalance
-        _user[msg.sender].balances[_allowner];
-
-
+        _user[_from].allowances[_to].value -= _amount;
+        _user[_from].allMyAllowanceBalances -= _amount;
+        _user[_from].balances[_to] -= _amount;
+        _user[_to].myBalance += _amount;
     }
-    function verifyRemainingTime(address _allowner) internal view{
-        require(block.timestamp < _user[msg.sender].allowances[_allowner].timestamp + _user[msg.sender].allowances[_allowner].duration, "Your allowed time has ended.");
+    function redeemValueFromBalance(address _from, address _to, uint _amount) internal {
+        require(_user[_from].balances[_to] >= _amount, "Insufficient funds.");
+
+        _user[_from].allowances[_to].value -= _amount;
+        _user[_from].allMyAllowanceBalances -= _amount;
+        _user[_from].balances[_to] -= _amount;
+        _user[_to].myBalance += _amount;
+    }
+    function verifiesRemainingTime(address _allowner) internal view returns(bool){
+        return block.timestamp < _user[msg.sender].allowances[_allowner].timestamp + _user[msg.sender].allowances[_allowner].duration;
     }
     ////////////////////////////////////////
 
@@ -178,7 +173,7 @@ contract WalletChallenge is Ownable {
         payable(msg.sender).transfer(_amount);
     }
 
-    function withdrawFromAllowance (address _allowner, uint _amount) public verifiesRemainingTime(_allowner) {
+    function withdrawFromAllowance (address _allowner, uint _amount) public verifyRemainingTime(_allowner) {
         require((_user[msg.sender].allowances[_allowner].value >= _amount) && (_user[msg.sender].balances[_allowner] >= _amount), "Insufficient allowed funds.");
 
         _user[msg.sender].allowances[_allowner].value -= _amount;
