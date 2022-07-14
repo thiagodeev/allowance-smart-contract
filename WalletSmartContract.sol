@@ -30,17 +30,20 @@ contract WalletChallenge is Ownable {
         uint indexed _timestamp,
         uint _duration,
         uint _value,
+        address _from,
         address indexed _to
     );
     event AllowanceRevoked(
         uint indexed _index,
         uint indexed _timestamp,
+        address _from,
         address indexed _to,
         uint _redeemedValue
     );
     event MoneyRedeemed(
         uint indexed _index,
         uint indexed _timestamp,
+        address _from,
         address indexed _to,
         uint _redeemedValue
     );
@@ -62,6 +65,7 @@ contract WalletChallenge is Ownable {
             _user[_to].allowances[msg.sender].timestamp,
             _user[_to].allowances[msg.sender].duration,
             _user[_to].allowances[msg.sender].value,
+            msg.sender,
             _to
         );
         _user[_to].allowances[msg.sender].index ++;
@@ -90,8 +94,8 @@ contract WalletChallenge is Ownable {
             _user[msg.sender].allowances[_allowner].index - 1,
             _user[msg.sender].allowances[_allowner].timestamp,
             _user[msg.sender].allowances[_allowner].duration,
-            block.timestamp,
             getMyAllowanceRemainingTime(_allowner),
+            block.timestamp,
             _user[msg.sender].allowances[_allowner].value
         );
     }
@@ -99,7 +103,7 @@ contract WalletChallenge is Ownable {
 
     /////////////////////Allowance Functions
     function giveAllowance(address _to, uint _duration, uint _amount) public AllowanceFunction(_to) {
-        require(_user[_to].balances[msg.sender] >= _amount, "Insufficient funds.");
+        require((_user[_to].balances[msg.sender] - _user[_to].allowances[msg.sender].value) >= _amount, "Insufficient free funds.");
 
         setAllowanceTime(_to, _duration);
         _user[_to].allowances[msg.sender].value = _amount;
@@ -128,6 +132,7 @@ contract WalletChallenge is Ownable {
         emit AllowanceRevoked(
             _user[_wallet].allowances[msg.sender].index,
             _user[_wallet].allowances[msg.sender].timestamp,
+            msg.sender,
             _wallet,
             0
         );
@@ -144,6 +149,7 @@ contract WalletChallenge is Ownable {
         emit MoneyRedeemed(
             _redeemedMoneyEventIndex,
             block.timestamp,
+            msg.sender,
             _wallet,
             _redeemedValue
         );
