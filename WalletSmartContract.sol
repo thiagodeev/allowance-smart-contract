@@ -19,7 +19,6 @@ contract WalletChallenge is Ownable {
         uint timestamp;
         uint duration;
         uint value;
-        address from;
     }
 
     mapping (address => User) internal _user;
@@ -59,7 +58,6 @@ contract WalletChallenge is Ownable {
         
         _;
 
-        _user[_to].allowances[msg.sender].from = msg.sender;
         emit AllowanceSucceed(
             _user[_to].allowances[msg.sender].index,
             _user[_to].allowances[msg.sender].timestamp,
@@ -103,11 +101,12 @@ contract WalletChallenge is Ownable {
 
     /////////////////////Allowance Functions
     function giveAllowance(address _to, uint _duration, uint _amount) public AllowanceFunction(_to) {
-        require((_user[_to].balances[msg.sender] - _user[_to].allowances[msg.sender].value) >= _amount, "Insufficient free funds.");
+        require(_user[_to].balances[msg.sender] >= _amount, "Insufficient funds.");
 
         setAllowanceTime(_to, _duration);
-        _user[_to].allowances[msg.sender].value = _amount;
-        _user[_to].allMyAllowanceBalances += _amount;
+
+        _user[_to].allMyAllowanceBalances -= _user[_to].allowances[msg.sender].value;
+        _user[_to].allMyAllowanceBalances += (_user[_to].allowances[msg.sender].value = _amount);
     }
 
     function payAndGiveAllowance(address _to, uint _duration) public payable AllowanceFunction(_to){
@@ -126,7 +125,8 @@ contract WalletChallenge is Ownable {
     
     function revokeAllowanceOf(address _wallet) public IsThereAnAllowance(msg.sender, _wallet){
         require(_wallet != msg.sender, "You can't do this with your own wallet.");
-        redeemValueFromAllowance(_wallet, msg.sender, _user[_wallet].allowances[msg.sender].value);
+        uint _redeemedValue = _user[_wallet].allowances[msg.sender].value;
+        redeemValueFromAllowance(_wallet, msg.sender, _redeemedValue);
         setAllowanceTime(_wallet, 0);
 
         emit AllowanceRevoked(
@@ -134,7 +134,7 @@ contract WalletChallenge is Ownable {
             _user[_wallet].allowances[msg.sender].timestamp,
             msg.sender,
             _wallet,
-            0
+            _redeemedValue
         );
 
         _user[_wallet].allowances[msg.sender].index++;
