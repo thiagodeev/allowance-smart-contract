@@ -71,7 +71,7 @@ contract WalletChallenge is Ownable {
         require(verifiesRemainingTime(_allowned, _allowner), "Your allowed time has ended.");
         _;
     }
-    modifier NotYourself {
+    modifier NotYourself (address _to){
         require(_to != msg.sender, "You can't do this with your own wallet.");
         _;
     }
@@ -103,7 +103,7 @@ contract WalletChallenge is Ownable {
     ///////////////////////////////////
 
     /////////////////////Allowance Functions
-    function giveAllowance(address _to, uint _duration, uint _amount) public NotYourself AllowanceFunction(_to) {
+    function giveAllowance(address _to, uint _duration, uint _amount) public NotYourself(_to) AllowanceFunction(_to) {
         require(_user[_to].balances[msg.sender] >= _amount, "Insufficient funds.");
 
         setAllowanceTime(_to, _duration);
@@ -112,21 +112,21 @@ contract WalletChallenge is Ownable {
         _user[_to].allMyAllowanceBalances += (_user[_to].allowances[msg.sender].value = _amount);
     }
 
-    function payAndGiveAllowance(address _to, uint _duration) public payable NotYourself AllowanceFunction(_to){
+    function payAndGiveAllowance(address _to, uint _duration) public payable NotYourself(_to) AllowanceFunction(_to){
         _totalBalance += msg.value;
         setAllowanceTime(_to, _duration);
         _user[_to].allMyAllowanceBalances += msg.value;
         _user[_to].balances[msg.sender] += (_user[_to].allowances[msg.sender].value = msg.value);
     }
 
-    function transferAndGiveAllowance(address _to, uint _duration, uint _amount) public NotYourself AllowanceFunction(_to){
+    function transferAndGiveAllowance(address _to, uint _duration, uint _amount) public NotYourself(_to) AllowanceFunction(_to){
         decreaseMoneyFromMyBalance(msg.sender, _amount);
         setAllowanceTime(_to, _duration);
         _user[_to].allMyAllowanceBalances += _amount;
         _user[_to].balances[msg.sender] += (_user[_to].allowances[msg.sender].value = _amount);
     }
     
-    function revokeAllowanceOf(address _wallet) public NotYourself IsThereAnAllowance(msg.sender, _wallet){
+    function revokeAllowanceOf(address _wallet) public NotYourself(_wallet) IsThereAnAllowance(msg.sender, _wallet){
         uint _redeemedValue = _user[_wallet].allowances[msg.sender].value;
         redeemValueFromAllowance(_wallet, msg.sender, _redeemedValue);
         setAllowanceTime(_wallet, 0);
@@ -142,7 +142,7 @@ contract WalletChallenge is Ownable {
         );
     }
     
-    function redeemFreeValueFromBalanceOf(address _wallet) public NotYourself {
+    function redeemFreeValueFromBalanceOf(address _wallet) public NotYourself(_wallet) {
         uint _redeemedValue = _user[_wallet].balances[msg.sender] - _user[_wallet].allowances[msg.sender].value;
         redeemValueFromBalance(_wallet, msg.sender, _redeemedValue);
 
