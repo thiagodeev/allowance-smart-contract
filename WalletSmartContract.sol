@@ -159,8 +159,12 @@ contract WalletChallenge is Ownable {
     /////////////////////////////////////////
 
     /////////////////////Internal Functions
-    function getMyAllowanceRemainingTime(address _allowner) internal view verifyRemainingTime(msg.sender,_allowner) returns(uint remainingTime){
-        return (_user[msg.sender].allowances[_allowner].timestamp + _user[msg.sender].allowances[_allowner].duration) - block.timestamp;
+    function getMyAllowanceRemainingTime(address _allowner) internal view returns(uint remainingTime){
+        if (verifiesRemainingTime(msg.sender, _allowner)) {
+            return (_user[msg.sender].allowances[_allowner].timestamp + _user[msg.sender].allowances[_allowner].duration) - block.timestamp;
+        } else {
+            return 0;
+        }
     }
     function setAllowanceTime(address _to, uint _duration) internal {
         _user[_to].allowances[msg.sender].timestamp = block.timestamp;
