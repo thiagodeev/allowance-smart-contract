@@ -6,7 +6,7 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 
 ## Funções do contrato:
 
-- ### [getTotalBalance](#gettotalbalance)
+- ### [getTotalBalance](#getTotalBalance)
 
 - 
 
