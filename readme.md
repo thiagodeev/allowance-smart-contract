@@ -12,84 +12,17 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 
 asdf asdf
 
-as dfasd f
-
-asdf 
-
-asd f
-
-asdf 
-
-asdf a
-
-sdf as
-
-dfd as
-
-dg g
-
-asdg
-
-asg
-
-ag
-
-asd
-
-ga s
-
-ga
-
-sdf
-
-asd
-
-fas
-
-dfasd
-
- fasfdgha
-
-gf
-
-safg
-
-asfg
-
 asd
 
 gs
 
-### get
+### getTotalBalance
 
 asdfjasçkdjfasdkfjçalkdjsfçlkdsjfasdjfa.sdf ladsfj asdkf ljasçkflj
 
 uhjh
 
-hhyygighjuh
-
-dfghgdfghsfdgh
-
-fghfdsgh
-
-sfgh
-
-sfgdhs
-
-gh
-
-dfsgh
-
-sdg
-
-hgsdfhsdfgsdfh
-
-gsdfg
-
-sd
-
-fg
-
+hh
 sdfgsdg
 
 d
