@@ -6,11 +6,9 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 
 ## Funções do contrato:
 
-- ### [getTotalBalance](#getTotalBalance)
+- ### [getTotalBalance](#get)
 
 - 
-
-
 
 asdf asdf
 
@@ -33,8 +31,6 @@ dg g
 asdg
 
 asg
-
-
 
 ag
 
@@ -64,8 +60,6 @@ asd
 
 gs
 
-### getTotalBalance <a name="getTotalBalance"></a>
+### get
 
 asdfjasçkdjfasdkfjçalkdjsfçlkdsjfasdjfa.sdf ladsfj asdkf ljasçkflj
-
-
