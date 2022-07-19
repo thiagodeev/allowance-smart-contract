@@ -81,4 +81,4 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 
 1. ### <a name="withdrawfrommybalance"></a> withdrawFromMyBalance (sacarDoMeuSaldo)
 
-2. ### <a name="gettotalbalance"></a> withdrawFromAllowance (sacarDeSubsídio)
+2. ### <a name="withdrawfromallowance"></a> withdrawFromAllowance (sacarDeSubsídio)
