@@ -48,11 +48,15 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
     Obtém todo o saldo proveniente de subsídios/mesadas, a soma de todos os subsídios/mesadas atribuídas à carteira que executa a função.
 
 4. ### <a name="getmyreservedbalancefrom"></a> getMyReservedBalanceFrom (obterMeuSaldoReservadoDe)
-   
+
+*\[Parâmetro: _allowner: representa o endereço da carteira do qual se quer verificar o saldo.\]* 
+
     Obtém da carteira passada como parâmetro o saldo de dinheiro reservado desta para a carteira que executa a função. 
     (Ex: a carteira A tem reservado 5 Ethers para a carteira B, mas dá um subsídio de apenas 1 Ether para a carteira B. Quando esta função for chamada pela carteira B retornará o valor de 5 Ether pois esse é o saldo que está reservado da carteira A para ela, mesmo que somente 1 Ether esteja disponível no subsídio.)
 
 5. ### <a name="getmyallowancefrom"></a> getMyAllowanceFrom (obterMeuSubsídioDe)
+   
+   *\[Parâmetro: _allowner: representa o endereço da carteira do qual se quer verificar o subsídio.\]*
    
     Obtém os dados do subsídio/mesada recebido pela carteira que deve ser passada como parâmetro. Os dados são:
    
@@ -68,9 +72,18 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 - ### Atribuir subsídio/mesada:
   
   1. ### <a name="giveallowance"></a> giveAllowance (atribuirSubsídio)
-  2. ### <a name="depositandgiveallowance"></a> depositAndGiveAllowance (depositarEAtribuirSubsídio)
-  3. ### <a name="transferandgiveallowance"></a> transferAndGiveAllowance (transferirEAtribuirSubsídio)
+     
+     */[Parâmetros: 
+     _to: representa o endereço da carteira que se quer dar o subsídio.
+     _duration: o tempo (em segundos) de duração do subsídio.
+     _amount: a quantidade a ser permitida./]* <br><br>
+     
+      Atribui um subsídio à uma carteira, especificando o endereço desta, a duração e a quantidade do subsídio. 
+      **O dinheiro é retirado do saldo já reservado para esta carteira.** 
+      *Caso queira dar um subsídio ao mesmo tempo em que se deposita o valor use a função [depositAndGiveAllowance](#depositandgiveallowance), ou se quiser dar um subsídio com o valor do saldo da carteira que irá subsidiar use a função [transferAndGiveAllowance](#transferandgiveallowance)*
+2. ### <a name="depositandgiveallowance"></a> depositAndGiveAllowance (depositarEAtribuirSubsídio)
 
+3. ### <a name="transferandgiveallowance"></a> transferAndGiveAllowance (transferirEAtribuirSubsídio)
 - ### Revogar subsídio/mesada:
   
   1. ### <a name="revokeallowanceof"></a> revokeAllowanceOf (revogarSubsídioDe)
