@@ -112,7 +112,7 @@ contract WalletChallenge is Ownable {
         _user[_to].allMyAllowanceBalances += (_user[_to].allowances[msg.sender].value = _amount);
     }
 
-    function payAndGiveAllowance(address _to, uint _duration) public payable NotYourself(_to) AllowanceFunction(_to){
+    function depositAndGiveAllowance(address _to, uint _duration) public payable NotYourself(_to) AllowanceFunction(_to){
         _totalBalance += msg.value;
         setAllowanceTime(_to, _duration);
         _user[_to].allMyAllowanceBalances += msg.value;

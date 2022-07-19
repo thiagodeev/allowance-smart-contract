@@ -4,27 +4,34 @@ Um contrato inteligente (Smart Contract) com funcionalidades de permissão de va
 
 O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, Polygon, ou qualquer outra que possua integração com a linguagem Solidity.
 
-## Funções do contrato:
+----
 
-- ### [getTotalBalance](#get)
+## Sumário das funções do contrato:
 
-- 
+1. ### Funções de leitura de valores:
+   
+   1. #### [getTotalBalance](#gettotalbalance) (obterSaldoTotal)
+   2. #### [getMyBalance](#getmybalance) (obterMeuSaldo)
+   3. #### [getAllMyAllowanceBalances](#getallmyallowancebalances) (obterTodosOsMeusSaldosDeSubsídio)
+   4. #### [getMyAllowanceBalanceFrom](#getmyallowancebalancefrom) (obterMeuSaldoDeSubsídioDe)
+   5. #### [getMyAllowanceFrom](#getmyallowancefrom) (obterMeuSubsídioDe)
 
-asdf asdf
+2. ### Funções de subsídio:
+   
+   1. #### [giveAllowance](#giveallowance) (obterSaldoTotal)
 
-asd
+---
 
-gs
+## Funções de leitura de valores:
 
-### getTotalBalance
+1. ### getTotalBalance
 
-asdfjasçkdjfasdkfjçalkdjsfçlkdsjfasdjfa.sdf ladsfj asdkf ljasçkflj
+2. ### getMyBalance
 
-uhjh
+3. ### getAllMyAllowanceBalances
 
-hh
-sdfgsdg
+4. ### getMyAllowanceBalanceFrom
 
-d
+5. ### getMyAllowanceFrom
 
-
+6. ### giveAllowance
