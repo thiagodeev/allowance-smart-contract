@@ -87,7 +87,7 @@ contract WalletChallenge is Ownable {
     function getAllMyAllowanceBalances() public view returns(uint allMyAllowanceBalances){
         return _user[msg.sender].allMyAllowanceBalances;
     }
-    function getMyAllowanceBalanceFrom(address _allowner) public view IsThereAnAllowance(_allowner, msg.sender) returns(uint getMyAllowanceBalance){
+    function getMyReservedBalanceFrom(address _allowner) public view IsThereAnAllowance(_allowner, msg.sender) returns(uint getMyAllowanceBalance){
         return _user[msg.sender].balances[_allowner];
     }
     function getMyAllowanceFrom(address _allowner) public view IsThereAnAllowance(_allowner, msg.sender) returns(uint index, uint timestamp, uint duration, uint remainingTime, uint blockTimestamp, uint value){
@@ -142,7 +142,7 @@ contract WalletChallenge is Ownable {
         );
     }
     
-    function redeemFreeValueFromBalanceOf(address _wallet) public NotYourself(_wallet) {
+    function redeemFreeValueFromTheBalanceOf(address _wallet) public NotYourself(_wallet) {
         uint _redeemedValue = _user[_wallet].balances[msg.sender] - _user[_wallet].allowances[msg.sender].value;
         redeemValueFromBalance(_wallet, msg.sender, _redeemedValue);
 
