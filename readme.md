@@ -107,10 +107,10 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 - ### Revogar subsídio/mesada:
   
   1. ### <a name="revokeallowanceof"></a> revokeAllowanceOf (revogarSubsídioDe)
-	*\[Parâmetro:<br>
-	**_wallet**: representa o endereço da carteira do qual se quer revogar o subsídio.\]*
-	
-	Revoga um subsídio dado à uma carteira (**\_wallet**) e resgata o valor que ainda não foi usado, transferindo de volta para o saldo de quem deu o subsídio/executa a função.
+	  *\[Parâmetro:<br>
+	  **_wallet**: representa o endereço da carteira do qual se quer revogar o subsídio.\]*
+	  
+	  Revoga um subsídio dado à uma carteira (**\_wallet**) e resgata o valor que ainda não foi usado, transferindo de volta para o saldo de quem deu o subsídio/executa a função.
   
   2. ### <a name="redeemfreevaluefromthebalanceof"></a> redeemFreeValueFromTheBalanceOf (resgatarValorDisponívelDoSaldoDe)
 	  *\[Parâmetro:<br>
