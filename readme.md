@@ -134,3 +134,9 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 	**_amount**: representa o valor a ser sacado.\]*
 	
 	Saca a quantida especificada (**\_amount**) de um subsídio atribuído a você por alguma carteira (**\_allowner**)(Para sacar valores que estão sendo usados em subsídios, primeiro revogue os subsídios para resgatar os valores).
+
+
+
+
+
+>\[Obs: o contrato também possui mais duas funções não comentadas nesse tutorial, **renouceOwnership** e **transferOwnership**; são funções relacionadas ao pertencimento do contrato e não possuem relação com os usos normais do contrato.\]
