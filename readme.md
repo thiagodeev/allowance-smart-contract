@@ -114,19 +114,28 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
   1. ### <a name="revokeallowanceof"></a> revokeAllowanceOf (revogarSubsídioDe)
 	*\[Parâmetro:
    **_wallet**: representa o endereço da carteira do qual se quer revogar o subsídio.\]*
-
-	Revoga um subsídio dado à uma carteira (**\_wallet**) e resgata o valor que ainda não foi usado, transferindo de volta para o saldo de quem deu o subsídio/executa a função.
+   
+   Revoga um subsídio dado à uma carteira (**\_wallet**) e resgata o valor que ainda não foi usado, transferindo de volta para o saldo de quem deu o subsídio/executa a função.
   
   2. ### <a name="redeemfreevaluefromthebalanceof"></a> redeemFreeValueFromTheBalanceOf (resgatarValorDisponívelDoSaldoDe)
 	*\[Parâmetro:
    **_wallet**: representa o endereço da carteira do qual se quer resgatar o valor.\]*
-
-	Resgata o valor livre de uma carteira (**\_wallet**), transferindo de volta para a carteira que tinha tranferido este valor. Valor livre significa um valor reservado para uma carteira que não está sendo aplicado em nenhum subsídio.
-
-	Ex: a carteira A tem 5 Ethers reservados para a carteira B, mas no momento existe um subsídio de apenas 1 Ether atribuído para a carteira B. A carteira A pode resgatar os 4 Ethers livres chamando a função *redeemFreeValueFromTheBalanceOf*.
+   
+   Resgata o valor livre de uma carteira (**\_wallet**), transferindo de volta para a carteira que tinha tranferido este valor. Valor livre significa um valor reservado para uma carteira que não está sendo aplicado em nenhum subsídio.
+   
+   Ex: a carteira A tem 5 Ethers reservados para a carteira B, mas no momento existe um subsídio de apenas 1 Ether atribuído para a carteira B. A carteira A pode resgatar os 4 Ethers livres chamando a função *redeemFreeValueFromTheBalanceOf*, isso fará com que a carteira A consiga sacar todo o valor disponível com exceção do valor subisidiado.
 
 ## Funções de saque:
 
 1. ### <a name="withdrawfrommybalance"></a> withdrawFromMyBalance (sacarDoMeuSaldo)
+	*\[Parâmetro:
+   **_amount**: representa o valor a ser sacado.\]*
+   
+   Saca de seu próprio saldo, o valor depositado no contrato, a quantidade especificada (**\_amount**) (para sacar valores que estão sendo usados em subsídios, primeiro revogue os subsídios para resgatar os valores).
 
 2. ### <a name="withdrawfromallowance"></a> withdrawFromAllowance (sacarDeSubsídio)
+	*\[Parâmetro:<br>
+	**_allowner**: o endereço da carteira que deu o subsídio, de quem se quer sacar.<br>
+	**_amount**: representa o valor a ser sacado.\]*
+   
+   Saca a quantida especificada (**\_amount**) de um subsídio atribuído a você por alguma carteira (**\_allowner**)(Para sacar valores que estão sendo usados em subsídios, primeiro revogue os subsídios para resgatar os valores).
