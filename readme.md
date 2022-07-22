@@ -87,8 +87,8 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 	     
 	     Ou seja, esta função deve ser usada caso já exista um saldo reservado para a carteira "**\_to**" e se quer criar um subsídio com base nesse valor existente, sem precisar depositar/transferir algum valor.
 	     
-	     *Caso queira dar um subsídio ao mesmo tempo em que se deposita o valor, use a função [depositAndGiveAllowance](#depositandgiveallowance); se quiser dar um subsídio com o valor do saldo da carteira que irá subsidiar, use a função [transferAndGiveAllowance](#transferandgiveallowance)*
-	1. ### <a name="depositandgiveallowance"></a> depositAndGiveAllowance (depositarEAtribuirSubsídio)
+	     *Caso queira dar um subsídio ao mesmo tempo em que se deposita o valor, use a função [depositAndGiveAllowance](#depositandgiveallowance); se quiser dar um subsídio com o valor do saldo da carteira que irá subsidiar, use a função [transferAndGiveAllowance](#transferandgiveallowance)*.
+	2. ### <a name="depositandgiveallowance"></a> depositAndGiveAllowance (depositarEAtribuirSubsídio)
 	   
 	     *\[Parâmetros: <br>
 	     **_to**: representa o endereço da carteira que se quer dar o subsídio.<br>
@@ -96,14 +96,34 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
 	     
 	     Atribui um subsídio à uma carteira ao mesmo tempo em que se deposita o valor no contrato, especificando o endereço da carteira (**\_to**) e a duração (**\_duration**). O valor depositado equivale ao valor do subsídio.
 	     
-	     *Caso queira dar um subsídio ao mesmo tempo em que se deposita o valor, use a função [depositAndGiveAllowance](#depositandgiveallowance); se quiser dar um subsídio com o valor do saldo da carteira que irá subsidiar, use a função [transferAndGiveAllowance](#transferandgiveallowance)*
+	     *Caso queira dar um subsídio com base em um valor que já exista no saldo reservado de determinada carteira, use a função [giveallowance](#giveallowance); se quiser dar um subsídio com o valor do saldo da carteira que irá subsidiar, use a função [transferAndGiveAllowance](#transferandgiveallowance)*.
 	
 	3. ### <a name="transferandgiveallowance"></a> transferAndGiveAllowance (transferirEAtribuirSubsídio)
+
+		*\[Parâmetros: <br>
+	     **_to**: representa o endereço da carteira que se quer dar o subsídio.<br>
+	     **_duration**: o tempo (em segundos) de duração do subsídio.<br>
+	     **_amount**: a quantidade a ser permitida.\]* 
+
+		Atribui um subsídio à uma carteira ao mesmo tempo em que se transfere o valor de seu próprio saldo para esta carteira, especificando o endereço desta (**\_to**), a duração (**\_duration**) e a quantidade do subsídio (**\_amount**; a quantidade é a quantidade que será transferida do saldo de quem executa a função). 
+		**O dinheiro é retirado do saldo de quem executa a função, ocorrendo uma transferência do valor.**
+		
+		*Caso queira dar um subsídio com base em um valor que já exista no saldo reservado de determinada carteira, use a função [giveallowance](#giveallowance); se quiser dar um subsídio ao mesmo tempo em que se deposita o valor, use a função [depositAndGiveAllowance](#depositandgiveallowance).
 - ### Revogar subsídio/mesada:
   
   1. ### <a name="revokeallowanceof"></a> revokeAllowanceOf (revogarSubsídioDe)
+	*\[Parâmetro:
+   **_wallet**: representa o endereço da carteira do qual se quer revogar o subsídio.\]*
+
+	Revoga um subsídio dado à uma carteira (**\_wallet**) e resgata o valor que ainda não foi usado, transferindo de volta para o saldo de quem deu o subsídio/executa a função.
   
   2. ### <a name="redeemfreevaluefromthebalanceof"></a> redeemFreeValueFromTheBalanceOf (resgatarValorDisponívelDoSaldoDe)
+	*\[Parâmetro:
+   **_wallet**: representa o endereço da carteira do qual se quer resgatar o valor.\]*
+
+	Resgata o valor livre de uma carteira (**\_wallet**), transferindo de volta para a carteira que tinha tranferido este valor. Valor livre significa um valor reservado para uma carteira que não está sendo aplicado em nenhum subsídio.
+
+	Ex: a carteira A tem 5 Ethers reservados para a carteira B, mas no momento existe um subsídio de apenas 1 Ether atribuído para a carteira B. A carteira A pode resgatar os 4 Ethers livres chamando a função *redeemFreeValueFromTheBalanceOf*.
 
 ## Funções de saque:
 
