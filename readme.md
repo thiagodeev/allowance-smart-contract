@@ -52,8 +52,6 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
    *\[Parâmetro:
    **_allowner**: representa o endereço da carteira do qual se quer verificar o saldo.\]* 
    
-   
-   
     Obtém da carteira passada como parâmetro o saldo de dinheiro reservado desta para a carteira que executa a função. 
     (Ex: a carteira A tem reservado 5 Ethers para a carteira B, mas dá um subsídio de apenas 1 Ether para a carteira B. Quando esta função for chamada pela carteira B retornará o valor de 5 Ether pois esse é o saldo que está reservado da carteira A para ela, mesmo que somente 1 Ether esteja disponível no subsídio.)
 
@@ -61,8 +59,6 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
    
    *\[Parâmetro:
    **_allowner**: representa o endereço da carteira do qual se quer verificar o subsídio.\]*
-   
-   
    
     Obtém os dados do subsídio/mesada recebido pela carteira que deve ser passada como parâmetro. Os dados são:
 - Índice (número identificador do subsídio)
@@ -83,14 +79,27 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
      **_duration**: o tempo (em segundos) de duração do subsídio.
      **_amount**: a quantidade a ser permitida.\]* 
      
-     
-     
       Atribui um subsídio à uma carteira, especificando o endereço desta, a duração e a quantidade do subsídio. 
-      **O dinheiro é retirado do saldo já reservado para esta carteira.** 
+      **O dinheiro é retirado do saldo já reservado para esta carteira.**
      
+     Ex:  é dado um subsídio da carteira A para a carteira B com o valor de 5 Ethers, mas logo em seguida se quer dar um novo subsídio com um valor inferior, 3 Ethers por exemplo. Não há necessidade de se adicionar mais Ethers para dar um novo subsídio, pode se criar um novo com base no valor reservado que já existe da carteora A para a carteira B, basta apenas que o "**\_amount**" seja um valor menor ou igual ao saldo reservado para a carteira que se quer subsidiar.
+     
+      Ou seja, esta função deve ser usada caso já exista um saldo reservado para a carteira "**\_to**" e se quer criar um subsídio com base nesse valor existente, sem precisar depositar/transferir algum valor.
      
       *Caso queira dar um subsídio ao mesmo tempo em que se deposita o valor, use a função [depositAndGiveAllowance](#depositandgiveallowance); se quiser dar um subsídio com o valor do saldo da carteira que irá subsidiar, use a função [transferAndGiveAllowance](#transferandgiveallowance)*
 2. ### <a name="depositandgiveallowance"></a> depositAndGiveAllowance (depositarEAtribuirSubsídio)
+   
+     *\[Parâmetros: 
+     **_to**: representa o endereço da carteira que se quer dar o subsídio.
+     **_duration**: o tempo (em segundos) de duração do subsídio.\]*
+   
+      Atribui um subsídio à uma carteira ao mesmo tempo em que se deposita o valor no contrato, especificando o endereço da carteira e a duração. O valor depositado equivale ao valor do subsídio.
+   
+     Ex:  é dado um subsídio da carteira A para a carteira B com o valor de 5 Ethers, mas logo em seguida se quer dar um novo subsídio com um valor inferior, 3 Ethers por exemplo. Não há necessidade de se adicionar mais Ethers para dar um novo subsídio, pode se criar um novo com base no valor reservado que já existe da carteora A para a carteira B, basta apenas que o "**\_amount**" seja um valor menor ou igual ao saldo reservado para a carteira que se quer subsidiar.
+   
+      Ou seja, esta função deve ser usada caso já exista um saldo reservado para a carteira "**\_to**" e se quer criar um subsídio com base nesse valor existente, sem precisar depositar/transferir algum valor.
+   
+      *Caso queira dar um subsídio ao mesmo tempo em que se deposita o valor, use a função [depositAndGiveAllowance](#depositandgiveallowance); se quiser dar um subsídio com o valor do saldo da carteira que irá subsidiar, use a função [transferAndGiveAllowance](#transferandgiveallowance)*
 
 3. ### <a name="transferandgiveallowance"></a> transferAndGiveAllowance (transferirEAtribuirSubsídio)
 - ### Revogar subsídio/mesada:
