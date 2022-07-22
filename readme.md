@@ -74,9 +74,9 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
   
   1. ### <a name="giveallowance"></a> giveAllowance (atribuirSubsídio)
      
-     *\[Parâmetros: 
-     **_to**: representa o endereço da carteira que se quer dar o subsídio.
-     **_duration**: o tempo (em segundos) de duração do subsídio.
+     *\[Parâmetros: <br>
+     **_to**: representa o endereço da carteira que se quer dar o subsídio.<br>
+     **_duration**: o tempo (em segundos) de duração do subsídio.<br>
      **_amount**: a quantidade a ser permitida.\]* 
      
       Atribui um subsídio à uma carteira, especificando o endereço desta, a duração e a quantidade do subsídio. 
@@ -89,8 +89,8 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
       *Caso queira dar um subsídio ao mesmo tempo em que se deposita o valor, use a função [depositAndGiveAllowance](#depositandgiveallowance); se quiser dar um subsídio com o valor do saldo da carteira que irá subsidiar, use a função [transferAndGiveAllowance](#transferandgiveallowance)*
 2. ### <a name="depositandgiveallowance"></a> depositAndGiveAllowance (depositarEAtribuirSubsídio)
    
-     *\[Parâmetros: 
-     **_to**: representa o endereço da carteira que se quer dar o subsídio.
+     *\[Parâmetros: <br>
+     **_to**: representa o endereço da carteira que se quer dar o subsídio.<br>
      **_duration**: o tempo (em segundos) de duração do subsídio.\]*
    
       Atribui um subsídio à uma carteira ao mesmo tempo em que se deposita o valor no contrato, especificando o endereço da carteira e a duração. O valor depositado equivale ao valor do subsídio.
