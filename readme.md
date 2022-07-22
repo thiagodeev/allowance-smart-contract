@@ -55,10 +55,10 @@ O contrato foi feito em **Solidity**, destinado para blockchains como Ethereum, 
     (Ex: a carteira A tem reservado 5 Ethers para a carteira B, mas dá um subsídio de apenas 1 Ether para a carteira B. Quando esta função for chamada pela carteira B retornará o valor de 5 Ether pois esse é o saldo que está reservado da carteira A para ela, mesmo que somente 1 Ether esteja disponível no subsídio.)
 
 5. ### <a name="getmyallowancefrom"></a> getMyAllowanceFrom (obterMeuSubsídioDe)
-   *\[Parâmetro:
-   **_allowner**: representa o endereço da carteira do qual se quer verificar o subsídio.\]*
-   
-    Obtém os dados do subsídio/mesada recebido pela carteira passada como parâmetro (**\_allowner**). Os dados são:
+	*\[Parâmetro:
+	**_allowner**: representa o endereço da carteira do qual se quer verificar o subsídio.\]*
+	
+	Obtém os dados do subsídio/mesada recebido pela carteira passada como parâmetro (**\_allowner**). Os dados são:
     
 	- Índice (número identificador do subsídio)
 	- Horário (quando o subsídio foi feito, em formato timestamp)
